@@ -1,5 +1,5 @@
 # DAACC_IA
----
+
 # Clasificación de Señales de Tráfico
 
 Proyecto de **clasificación multiclase** de señales de tránsito utilizando Redes Neuronales Convolucionales (CNN).
