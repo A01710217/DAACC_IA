@@ -73,8 +73,8 @@ Este proyecto tiene como objetivo desarrollar un modelo capaz de identificar cor
 
 ### Gráficas de Entrenamiento
 
-![Accuracy](/DAACC_IA/Results/accuracy.png)
-![Loss](/DAACC_IA/Results/loss.png)
+![Accuracy](Results/accuracy.png)
+![Loss](Results/loss.png)
 
 ---
 
