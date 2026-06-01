@@ -103,7 +103,7 @@ DAACC_IA/
 1. Clonar el repositorio:
    ```bash
    git clone 
-   cd road-sign-classification
+   cd DAACC_IA
     ```
 2. Ir al link de colab:
    ```bash
