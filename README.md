@@ -10,7 +10,7 @@ Proyecto de **clasificación multiclase** de señales de tránsito utilizando Re
 
 Este proyecto tiene como objetivo desarrollar un modelo capaz de identificar correctamente **7 tipos de señales de tráfico** comunes. Se utilizó un enfoque de aprendizaje profundo con TensorFlow/Keras, partiendo de un modelo CNN creado desde cero y aplicando técnicas de preprocesamiento y data augmentation.
 
-**Precisión alcanzada en Test:** **92.58%**
+**Precisión alcanzada en Test:** **95.32%**
 
 ---
 
