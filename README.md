@@ -133,15 +133,37 @@ Entrada (224 × 224 × 3)
  
 Salida: Distribución de probabilidad sobre 7 clases
 ```
-
-![alt text](results/base_model/descripcion.png)
+### Descripción de la arquitectura
+![Descripción de la arquitectura](results/base_model/descripcion.png)
 
 **Configuración**:
     - **Optimizador:** Adam.
     - **Función de Pérdida:** Entropía cruzada categórica (`categorical_crossentropy`), adecuada para la clasificación multiclase con etiquetas en codificación *one-hot*.
     - **Métrica Principal:** Precisión (*Accuracy*).
     - **Flujo de Entrenamiento:** El proceso se extendió por un máximo de 30 épocas utilizando generadores de datos en lotes (*data streams*). Con el fin de regularizar y estructurar los ciclos de cómputo, se fijaron 100 pasos por época (`steps_per_epoch=100`) para el subconjunto de entrenamiento y 50 pasos para el subconjunto de validación (`validation_steps=50`).
-3. **Enfoque Comparativo**: Aprendizaje por Transferencia (modelo del documenot `Road Sign Classification Using Transfer Learning and Pre-trained CNN Models`)
+
+## Reproducción de la CNN del paper
+
+Reproducción del enfoque propuesto por Hosseini et al. [1], utilizando VGG16.
+
+En el documento `Road Sign Classification Using Transfer Learning and Pre-trained CNN Models` no se construyo una red neuronal desde cero. En su lugar, utiliza una técnica llamada Transfer Learning (Aprendizaje por Transferencia). El cual consiste en tomar arquitecturas de modelos muy profundos que ya fueron pre-entrenados con millones de imágenes y adaptarlos a un nuevo problema (en este caso, las señales de la carretera). Los autores evaluaron 4 arquitecturas: VGG-16, VGG-19, ResNet50 y EfficientNetB0. Según sus resultados (Tabla 1 del documento `Performance Metrics of Road Sign Classification Models`), el modelo que mejor desempeño tuvo fue VGG-16, alcanzando un 99.21% de accuracy y un 99.11 de F1-score. Las configuraciones exactas que usaron los autores son: 
+- Cargar el modelo pre-entrenado y congelar sus capas, asu vez, estas las utilizaron como extractores de características para la clasificación de señales de tráfico.
+- Al final añadieron una ultima capa (una capa densa) conectada al modelo preentrenado, que toma las características extraídas como entrada y genera la distribución de probabilidad sobre las 43 clases de señales de tráfico.
+- Hiperparámetros:
+    - Optimizador: Adam
+    - Tasa de aprendizaje (Learning Rate): $1e^{-5}$
+    - Tamaño de lote (Batch size): 32 
+    - Épocas: 15
+    - Detención temprana (Early Stopping): Paciencia de 3 épocas si la validación no mejora.
+
+### Descripción de la arquitectura
+
+![Descripción de la arquitectura](results/paper_model/descripcion.png)
+
+> [!IMPORTANT]
+> En el paper usaron el dataset: GTSRB, el cual tiene 43 clases y son señales alemanas.
+
+## Modelo mejorado con Transfer Learning
 
 
 
@@ -175,18 +197,6 @@ Salida: Distribución de probabilidad sobre 7 clases
    https://drive.google.com/file/d/1WnmyhfcQ-aAz_27V_5awFO6Y8Tl_CP8R/view?usp=sharing
     ```
 
-## Comparación con modelo
-En el documento `Road Sign Classification Using Transfer Learning and Pre-trained CNN Models` no se construyo una red neuronal desde cero. En su lugar, utiliza una técnica llamada Transfer Learning (Aprendizaje por Transferencia). El cual consiste en tomar arquitecturas de modelos muy profundos que ya fueron pre-entrenados con millones de imágenes y adaptarlos a un nuevo problema (en este caso, las señales de la carretera). Los autores evaluaron 4 arquitecturas: VGG-16, VGG-19, ResNet50 y EfficientNetB0. Según sus resultados (Tabla 1 del documento `Performance Metrics of Road Sign Classification Models`), el modelo que mejor desempeño tuvo fue VGG-16, alcanzando un 99.21% de accuracy y un 99.11 de F1-score. Las configuraciones exactas que usaron los autores son: 
-- Cargar el modelo pre-entrenado y congelar sus capas, asu vez, estas las utilizaron como extractores de características para la clasificación de señales de tráfico.
-- Al final añadieron una ultima capa (una capa densa) conectada al modelo preentrenado, que toma las características extraídas como entrada y genera la distribución de probabilidad sobre las 43 clases de señales de tráfico.
-- Hiperparámetros:
-    - Optimizador: Adam
-    - Tasa de aprendizaje (Learning Rate): $1e^{-5}$
-    - Tamaño de lote (Batch size): 32 
-    - Épocas: 15
-    - Detención temprana (Early Stopping): Paciencia de 3 épocas si la validación no mejora.
-
-Y a su vez ellos usaron el dataset: GTSRB (alemán, 43 clases)
 
 ## Referencias
 [1]
