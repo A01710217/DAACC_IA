@@ -253,6 +253,14 @@ Salida: Distribución de probabilidad sobre 7 clases
 
 ![Gráficas_training_vs_validation](results/hybrid_model/graficas_training_vs_validation.png)
 
+## Matriz de confusión
+
+![Matriz de confusión de la CNN base](results/base_model/matriz_cnn_base.png)
+
+![Matriz de confusión de la CNN paper](results/paper_model/matriz_cnn_paper.png)
+
+![Matriz de confusión de la CNN VGG16 híbrida](results/hybrid_model/matriz_cnn_hibrida.png)
+
 ---
 
 ## Cómo Ejecutar el Proyecto
