@@ -139,7 +139,7 @@ Salida: Distribución de probabilidad sobre 7 clases
 **Configuración**:
     - **Optimizador:** Adam.
     - **Función de Pérdida:** Entropía cruzada categórica (`categorical_crossentropy`), adecuada para la clasificación multiclase con etiquetas en codificación *one-hot*.
-    - **Métrica Principal:** Precisión (*Accuracy*).
+    - **Métricas:** Accuracy y F1 score.
     - **Flujo de Entrenamiento:** El proceso se extendió por un máximo de 30 épocas utilizando generadores de datos en lotes (*data streams*). Con el fin de regularizar y estructurar los ciclos de cómputo, se fijaron 100 pasos por época (`steps_per_epoch=100`) para el subconjunto de entrenamiento y 50 pasos para el subconjunto de validación (`validation_steps=50`).
 
 ## Reproducción de la CNN del paper
@@ -176,6 +176,33 @@ Salida: Distribución de probabilidad sobre 7 clases
 > En el paper usaron el dataset: GTSRB, el cual tiene 43 clases y son señales alemanas.
 
 ## Modelo mejorado con Transfer Learning
+
+La arquitectura híbrida propuesta combina Transfer Learning y Fine-Tuning utilizando la red preentrenada VGG16 como extractor de características. Los primeros cuatro bloques convolucionales permanecen congelados para conservar el conocimiento adquirido durante el entrenamiento sobre ImageNet, mientras que el último bloque convolucional es ajustado específicamente para la tarea de clasificación de señales de tránsito. Posteriormente, se añaden capas densas personalizadas para realizar la clasificación final.
+
+### Configuración
+
+**Modelo Base**: VGG16 preentrenada con pesos de ImageNet (`include_top=False`).
+**Estrategia de Entrenamiento**: Fine-Tuning parcial, descongelando únicamente el último bloque convolucional de VGG16 mientras los bloques restantes permanecen congelados.
+**Regularización**: Capa `Dropout(0.5)` para reducir el sobreajuste y mejorar la capacidad de generalización.
+**Optimizador**: `Adam` con tasa de aprendizaje de `1e-5`.
+**Función de Pérdida**: Entropía cruzada categórica (`categorical_crossentropy`), adecuada para problemas de clasificación multiclase con etiquetas codificadas en formato one-hot.
+**Métricas**: Accuracy y F1-Score.
+**Flujo de Entrenamiento**: El proceso se ejecutó durante un máximo de 30 épocas utilizando generadores de imágenes por lotes. Se configuraron 100 pasos por época (`steps_per_epoch=100`) para el conjunto de entrenamiento y 50 pasos para el conjunto de validación (`validation_steps=50`).
+
+```
+Entrada (224 × 224 × 3)
+    │
+    ├─ VGG16 Preentrenada (ImageNet)
+    │   ├─ Bloques 1–4 congelados
+    │   └─ Bloque 5 ajustable (Fine-Tuning)
+    │
+    ├─ Flatten
+    ├─ Dense(512, ReLU)
+    ├─ Dropout(0.5)
+    └─ Dense(7, Softmax)
+
+Salida: Distribución de probabilidad sobre 7 clases
+```
 
 ### Descripción de la arquitectura
 
