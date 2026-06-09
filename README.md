@@ -304,34 +304,63 @@ La literatura base de Hosseini et al. utiliza VGG16 congelada de forma exitosa d
 
 ![Matriz de confusión de la CNN base](results/base_model/matriz_cnn_base.png)
 
+Clase 5 (Turn Left): Las confusiones con Clase 1 (Keep Right) es de 3 y también la confunde con Clase 6 (Turn Rght) se confinde 6 veces.
+
+Clase 6 (Turn Right): Las confusiones con Clase 1 (Keep Right) bajaron de 11 a solo 4.
+
+Clase 1 (Keep Right): Las confusiones con Clase 6 (Turn Right) bajaron a 3.
+
 ### Reproducción de la CNN del paper 
 
 ![Matriz de confusión de la CNN paper](results/paper_model/matriz_cnn_paper.png)
+
+Clase 5 (Turn Left): De 24 imágenes reales, 7 fueron confundidas con la Clase 0 (Keep Left), 6 Clase 1 (Keep Right). Solo acertó 19.
+
+Clase 1 (Keep Right): 16 imágenes se clasificaron erróneamente como Clase 6 (Turn Left).
 
 ### Modelo mejorado con Transfer Learning
 
 ![Matriz de confusión de la CNN VGG16 híbrida](results/hybrid_model/matriz_cnn_hibrida.png)
 
-Las confusiones masivas entre las flechas direccionales colapsaron a su punto mínimo: 
-- Clase 5 (Turn Left) con Clase 0 (Keep Left) existen errores de confusión, al igual que con las clases Clase 6 (Turn right) y  Clase 1 (Keep right).
+Clase 5 (Turn Left) con Clase 0 (Keep Left) existen errores de confusión, al igual que con las clases Clase 6 (Turn right) y  Clase 1 (Keep right).
 
 Clases complejas como 2 (No Entry), 4 (Stop Sign) y 0 (Keep Left) obtuvieron un 100% de efectividad (24/24 aciertos).
 
 ---
 
-## Cómo Ejecutar el Proyecto
+# Cómo Ejecutar el Proyecto
 
 1. Clonar el repositorio:
    ```bash
    git clone 
    cd DAACC_IA
     ```
-2. Ir al link de colab:
-   ```bash
-   https://drive.google.com/file/d/1WnmyhfcQ-aAz_27V_5awFO6Y8Tl_CP8R/view?usp=sharing
-    ```
+2. Ejecución del modelo.ipynb
+> [!Warning]
+> El archivo `Road_Signals.ipynb` está hecho para correrlo en Kaggle sin modificar nada, pero si se busca usar el de Google Colab, es mejor utilizar el proporcionado en las ligas de Google Colab incluidas abajo.
+
+Cargar y ejecutar secuencialmente el cuaderno Road_Signals.ipynb dentro de Kaggle o Google Colab (asegúrese de activar el entorno de aceleración por GPU mediante Entorno de ejecución > Cambiar tipo de entorno de ejecución > GPU). El script automatiza la descarga del dataset, la limpieza física de los directorios, el balanceo a 119 muestras y el entrenamiento de los tres modelos de control.
+
+> [!Tip]
+> Si quieres probar distintas imagenes puedes cambiar este path:
+> ```python
+> img_path = '/content/imagen.png'
+> ```
+> Solo necesitas cambiar `imagen.png` y subir una imagen a tu path en Google Colab.
+
+## Notebook en Google Colab
+
+```bash
+https://drive.google.com/file/d/1WnmyhfcQ-aAz_27V_5awFO6Y8Tl_CP8R/view?usp=sharing
+```
+
+## Interfaz 
+
+```bash
+https://colab.research.google.com/drive/1FS3Ac9kOwU1C_eEHb2H1tlmW0mRDD6tK?usp=sharing
+```
 
 
-## Referencias
+# Referencias
 [1]
 ‌Hosseini, S.H., Ghaderi, F., Moshiri, B., Norouzi, M. (2023). Road Sign Classification Using Transfer Learning and Pre-trained CNN Models.
