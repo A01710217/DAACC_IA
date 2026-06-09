@@ -71,15 +71,15 @@ DAACC_IA/
 
 El conjunto de datos utilizado en este proyecto consiste en imágenes pertenecientes a siete clases de señales viales:
 
-| ID de Clase | Etiqueta | Descripción |
-|-------------|----------|-------------|
-| 0 | Keep Left | Señal de mantener la izquierda |
-| 1 | Keep Right | Señal de mantener la derecha |
-| 2 | No Entry | Prohibición de entrada |
-| 3 | Pedestrian Crossing | Paso de peatones |
-| 4 | Stop Sign | Señal de alto |
-| 5 | Turn Left | Giro a la izquierda |
-| 6 | Turn Right | Giro a la derecha |
+| Clase          | Cantidad Original | Porcentaje |
+|----------------|-------------------|------------|
+| Keep Right     | 667               | 22.5%    |
+| Turn Right     | 552               | 18.6%    |
+| No Entry       | 634               | 21.4%    |
+| Turn Left      | 443               | 14.9%    |
+| Keep Left      | 303               | 10.2%    |
+| Pedestrian Crossing  | 251               | 8.5%     |
+| Stop Sign      | 119               | 4.0%     |
 
 **Imágenes totales:** 2,969
 
@@ -106,7 +106,6 @@ El conjunto de datos utilizado en este proyecto consiste en imágenes pertenecie
   - Train: 70%
   - Validation: 10%
   - Test: 20%
-Las imágenes fueron preprocesadas mediante el siguiente proceso:
 
 ---
 
@@ -115,6 +114,10 @@ Las imágenes fueron preprocesadas mediante el siguiente proceso:
 1. **Combinación de datos**: Se unieron las carpetas `train` y `val` en una sola carpeta (`all_signals`).
 2. **Balanceo de clases**: Todas las clases fueron igualadas a 119 imágenes, con el fin de evitar el "sesgo del modelo", ya que el modelo puede aprende mucho mejor la clase que tiene más imagenes.
 3. **Data Augmentation**: Rotación, desplazamiento, deformación y zoom.
+4. Se implementaron tres modelos de forma reproducible.
+    - CNN Base - Arquitectura desde 0
+    - Reproducción de la CNN del paper
+    - Modelo mejorado con Transfer Learning
 
 ## CNN Base - Arquitectura desde 0
 
@@ -146,7 +149,7 @@ Salida: Distribución de probabilidad sobre 7 clases
 
 ## Reproducción de la CNN del paper
 
-Reproducción del enfoque propuesto por Hosseini et al. [1], utilizando VGG16.
+Se implementó de forma estricta la metodología expuesta por Hosseini et al. (2023) [1]. El estudio original demuestra que al utilizar arquitecturas masivas preentrenadas con millones de imágenes genéricas (ImageNet), se logran tasas de éxito superiores al 99% en el dataset alemán GTSRB.
 
 En el documento `Road Sign Classification Using Transfer Learning and Pre-trained CNN Models` no se construyo una red neuronal desde cero. En su lugar, utiliza una técnica llamada Transfer Learning (Aprendizaje por Transferencia). El cual consiste en tomar arquitecturas de modelos muy profundos que ya fueron pre-entrenados con millones de imágenes y adaptarlos a un nuevo problema (en este caso, las señales de la carretera). Los autores evaluaron 4 arquitecturas: VGG-16, VGG-19, ResNet50 y EfficientNetB0. Según sus resultados (Tabla 1 del documento `Performance Metrics of Road Sign Classification Models`), el modelo que mejor desempeño tuvo fue VGG-16, alcanzando un 99.21% de accuracy y un 99.11 de F1-score. Las configuraciones exactas que usaron los autores son: 
 - Cargar el modelo pre-entrenado y congelar sus capas, asu vez, estas las utilizaron como extractores de características para la clasificación de señales de tráfico.
@@ -210,13 +213,21 @@ Salida: Distribución de probabilidad sobre 7 clases
 
 ![Descripción de la arquitectura](results/hybrid_model/descripcion.png)
 
+Al permitir que el último bloque de convoluciones ajuste sus pesos frente a una tasa de aprendizaje pequeña (`$1e^{-5}$`), los filtros abstractos se adaptan a las formas de las señales del dataset objetivo (flechas, octágonos, bordes triangulares), mientras que la capa de `Dropout(0.5)` previene la co-adaptación de neuronas, eliminando de raíz el sobreajuste latente que sufren los modelos sobreparametrizados.
+
+
+> [!NOTE]
+> Estos modelos se encuentran en el archivo: `Road_Signal.ipynb`.
+
 ---
 
 # Resultados
 
+Siguiendo las recomendaciones internacionales del estado del arte (Hosseini et al., 2023), los modelos fueron evaluados utilizando Accuracy y F1-Score, métrica esencial para le uso de clases.
+
 ## CNN Base - Arquitectura desde 0
 
-**Mejores metricas obtenidas:**
+**Mejores métricas obtenidas:**
 | Conjunto                |F1 Score|Accuracy | Loss  |
 |-------------------------|--------|---------|------|
 |**Train** (Epoca 29)     | 0.9395 |  0.9398 | 0.1548  |
@@ -252,6 +263,34 @@ Salida: Distribución de probabilidad sobre 7 clases
 ### Gráficas de Entrenamiento
 
 ![Gráficas_training_vs_validation](results/hybrid_model/graficas_training_vs_validation.png)
+
+## Resultados finales
+
+| Modelo              | Test Acc | Test F1-Score |
+|---------------------|----------|---------------|
+| CNN Baseline        | 0.9371   | 0.9344        |
+| VGG16 (Paper)       | 0.7543   | 0.7618        |
+| VGG16 (Híbrido)     | 0.9486   | 0.9481        |
+
+### CNN Baseline
+Test Accuracy (0.9371): Al enfrentarse al set de prueba con imágenes del mundo real que jamás había visto, el modelo clasifica correctamente el 93.71% de las señales de tráfico.
+
+Test F1-Score (0.9344): Indica un excelente equilibrio (93.44%) entre la precisión (no confundir una señal con otra, como Turn Left con Keep Left) y la sensibilidad (detectar la mayor cantidad de señales reales de cada tipo). El modelo es altamente confiable y balanceado entre las 7 clases.
+
+### VGG16 (Paper) 
+Test Accuracy (0.7543): Al evaluar con imágenes completamente nuevas de prueba, su rendimiento cae drásticamente. El modelo clasifica correctamente solo el 75.43% de las señales; es decir, falla en 1 de cada 4 señales de tráfico.
+
+Test F1-Score (0.7618): Un valor deficiente (76.18%). Significa que el modelo pierde el equilibrio en varias clases: genera muchas falsas alarmas (confunde formas geométricas similares) o pasa por alto señales reales debido a que los filtros heredados de ImageNet están congelados y no reconocen bien este dominio.
+
+### Híbrido
+
+Test Accuracy (0.9486): Al enfrentarse al set de prueba con imágenes del mundo real que jamás había visto, el modelo clasifica correctamente el 94.86% de las señales de tráfico, convirtiéndose en el modelo más exacto de todo el experimento.
+
+Test F1-Score (0.9481): Un puntaje sobresaliente (94.81%). Certifica que el refinamiento (Fine-Tuning + Dropout) logró un equilibrio óptimo: el sistema es sumamente robusto contra falsos positivos (no inventa señales que no están ahí) y falsos negativos (no se le escapa casi ninguna señal de las 7 categorías).
+
+### ¿Por qué la replicación del paper tiene un 75.43% de exactitud?
+La literatura base de Hosseini et al. utiliza VGG16 congelada de forma exitosa debido a que entrenan sobre el dataset alemán GTSRB, el cual posee más de 50,000 imágenes. Al aplicar esa misma metodología restrictiva sobre un dataset balanceado pequeño (833 imágenes), el modelo sufre un resultado con ruido no logrando mapear las clases simples de manera correcta. 
+
 
 ## Matriz de confusión
 
