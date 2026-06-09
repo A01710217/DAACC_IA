@@ -328,6 +328,30 @@ Clases complejas como 2 (No Entry), 4 (Stop Sign) y 0 (Keep Left) obtuvieron un 
 
 ---
 
+# Registro de Correcciones Realizadas
+
+Inicialmente, se implementó una configuración estándar de aumento de datos utilizando la clase ImageDataGenerator de Keras bajo los siguientes parámetros:
+
+```python
+train_datagen = ImageDataGenerator(
+    rescale=1./255,
+    rotation_range=15,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True,
+)
+```
+
+Sin embargo, un análisis crítico del dominio del dataset reveló dos errores que afectaban el desempeño del aprendizaje del modelo:
+
+Inversión Semántica por Volteo Horizontal (`horizontal_flip=True`): Al aplicar un espejo horizontal a las imágenes, las propiedades direccionales se invierten. Esto provoca que una señal de Keep Right se transforme visualmente en una de Keep Left. Al mantener la etiqueta original, se introduce ruido severo en el entrenamiento (label noise), obligando a la red a asociar características contradictorias.
+
+Ambigüedad Geométrica por Rotación (rotation_range=15): Las señales viales dependen estrictamente del ángulo y orientación de sus vectores internos (flechas). Una rotación, incluso de 15 grados, altera la inclinación original de la señal, provocando que una flecha de alineación diagonal (Keep Left) se aproxime al ángulo de una señal de giro de noventa grados (Turn Left), desdibujando las fronteras de decisión del clasificador.
+
+---
+
 # Cómo Ejecutar el Proyecto
 
 1. Clonar el repositorio:
@@ -360,6 +384,7 @@ https://drive.google.com/file/d/1WnmyhfcQ-aAz_27V_5awFO6Y8Tl_CP8R/view?usp=shari
 https://colab.research.google.com/drive/1FS3Ac9kOwU1C_eEHb2H1tlmW0mRDD6tK?usp=sharing
 ```
 
+---
 
 # Referencias
 [1]
