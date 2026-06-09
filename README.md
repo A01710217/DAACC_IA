@@ -6,7 +6,7 @@ Proyecto de **clasificación multiclase** de señales de tránsito utilizando Re
 
 ---
 
-## Resumen
+# Resumen 
 
 Este proyecto presenta un enfoque basado en Redes Neuronales Convolucionales (CNN) para la clasificación de señales viales en siete categorías: 
 - Keep Left
@@ -23,7 +23,40 @@ Palabras clave: Clasificación de señales viales · Redes neuronales convolucio
 
 ---
 
-## Tecnologías Utilizadas
+# Estructura del Proyecto en kaggle y Google Colab
+
+```bash
+Road_Signals/
+├── kaggle/
+    ├── input/
+        ├── datasets/
+            ├── ziadghanem01/
+                ├── road-signs/
+                    ├── dataset/  # Dataset original
+├── all_signals/                  # Dataset combinado
+├── signals/                      # Dataset 
+```
+
+# Estructura del Proyecto
+
+```bash
+DAACC_IA/
+├── Road_Signals.ipynb            # Notebook principal — entrenamiento y evaluación
+├── Interfaz_road_signals.ipynb   # Notebook para prueba de interfaz interactiva
+├── results/                      # Imágenes de resultados y métricas
+│   ├── .png
+│   ├── .png
+│   └── .png
+├── models/                       # Modelos guardados
+│   └── road_signals_model_hybrid.h5
+│   └── road_signals_model_paper.h5
+│   └── road_signals_model.h5
+└── README.md
+```
+
+--
+
+# Tecnologías Utilizadas
 
 - **Lenguaje:** Python 3.12
 - **Framework:** TensorFlow / Keras
@@ -34,7 +67,7 @@ Palabras clave: Clasificación de señales viales · Redes neuronales convolucio
 
 ---
 
-## Dataset
+# Dataset
 
 - **Fuente:** [Road Signs Dataset](https://www.kaggle.com/datasets/ziadghanem01/road-signs)
 - **Número de clases:** 7
@@ -56,7 +89,7 @@ Palabras clave: Clasificación de señales viales · Redes neuronales convolucio
 
 ---
 
-## Metodología
+# Metodología
 
 1. **Combinación de datos**: Se unieron las carpetas `train` y `val` en una sola carpeta (`all_signals`).
 2. **Balanceo de clases**: Todas las clases fueron igualadas a 119 imágenes, con el fin de evitar el "sesgo del modelo", ya que el modelo puede aprende mucho mejor la clase que tiene más imagenes.
@@ -84,33 +117,6 @@ Palabras clave: Clasificación de señales viales · Redes neuronales convolucio
 
 ![Accuracy](Results/accuracy.png)
 ![Loss](Results/loss.png)
-
----
-
-## Estructura del Proyecto en kaggle y Google Colab
-
-```bash
-Road_Signals/
-├── kaggle/
-    ├── input/
-        ├── datasets/
-            ├── ziadghanem01/
-                ├── road-signs/
-                    ├── dataset/  # Dataset original
-├── all_signals/                  # Dataset combinado
-├── signals/                      # Dataset 
-```
-
-## Estructura del Proyecto
-
-```bash
-DAACC_IA/
-├── Road_Signals.ipynb            # Notebook principal
-├── Interfaz_road_signals.ipynb   # Notebook donde probar la interfaz
-├── results/                      # Imagenes de los resultados
-├── models/                       # Modelos guardados (.h5)
-├── README.md
-```
 
 ---
 
