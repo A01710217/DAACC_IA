@@ -97,7 +97,9 @@ Road_Signals/
 ```bash
 DAACC_IA/
 ├── Road_Signals.ipynb            # Notebook principal
-├── results/
+├── Interfaz_road_signals.ipynb   # Notebook donde probar la interfaz
+├── results/                      # Imagenes de los resultados
+├── models/                       # Modelos guardados (.h5)
 ├── README.md
 ```
 
