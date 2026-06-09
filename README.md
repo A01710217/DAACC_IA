@@ -72,7 +72,7 @@ DAACC_IA/
 El conjunto de datos utilizado en este proyecto consiste en imágenes pertenecientes a siete clases de señales viales:
 
 | ID de Clase | Etiqueta | Descripción |
-|:---:|---|---|
+|-------------|----------|-------------|
 | 0 | Keep Left | Señal de mantener la izquierda |
 | 1 | Keep Right | Señal de mantener la derecha |
 | 2 | No Entry | Prohibición de entrada |
@@ -133,7 +133,9 @@ Entrada (224 × 224 × 3)
  
 Salida: Distribución de probabilidad sobre 7 clases
 ```
+
 ### Descripción de la arquitectura
+
 ![Descripción de la arquitectura](results/base_model/descripcion.png)
 
 **Configuración**:
@@ -208,22 +210,48 @@ Salida: Distribución de probabilidad sobre 7 clases
 
 ![Descripción de la arquitectura](results/hybrid_model/descripcion.png)
 
-
 ---
 
-## Resultados
-**Mejor Accuracy obtenida:**
-| Conjunto                  | Accuracy | Loss   |
-|---------------------------|----------|--------|
-| **Train** (Epoca 28)      |   93.40  | 20.05  |
-| **Validation** (Epoca 24) |   95.60  | 16.04  |
-| **Test**                  |   95.32  | 14.34  |
+# Resultados
 
+## CNN Base - Arquitectura desde 0
+
+**Mejores metricas obtenidas:**
+| Conjunto                |F1 Score|Accuracy | Loss  |
+|-------------------------|--------|---------|------|
+|**Train** (Epoca 29)     | 0.9395 |  0.9398 | 0.1548  |
+|**Validation** (Epoca 29)| 0.9740 |  0.9740 | 0.1073  |
+|**Test**                 | 0.9344 |  0.9371  | 0.1900  |
 
 ### Gráficas de Entrenamiento
 
-![Accuracy](Results/accuracy.png)
-![Loss](Results/loss.png)
+![Gráficas_training_vs_validation](results/base_model/graficas_training_vs_validation.png)
+
+## Reproducción de la CNN del paper
+
+**Mejores metricas obtenidas:**
+| Conjunto                |F1 Score|Accuracy | Loss  |
+|-------------------------|--------|---------|------|
+|**Train** (Epoca 12)     | 0.7992 |  0.8125 | 1.0305  |
+|**Validation** (Epoca 15)| 0.8548 |  0.8594 | 0.7934  |
+|**Test**                 | 0.7618 |  0.7543  | 0.8422  |
+
+### Gráficas de Entrenamiento
+
+![Gráficas_training_vs_validation](results/paper_model/graficas_training_vs_validation.png)
+
+## Modelo mejorado con Transfer Learning
+
+**Mejores metricas obtenidas:**
+| Conjunto                |F1 Score|Accuracy | Loss  |
+|-------------------------|--------|---------|------|
+|**Train** (Epoca 30)     | 0.9811 |  0.9811 | 0.0919 |
+|**Validation** (Epoca 29 y 30)| 0.9870 |  0.9870 | 0.0372  |
+|**Test**                 | 0.9481 |  0.9486  | 0.0956  |
+
+### Gráficas de Entrenamiento
+
+![Gráficas_training_vs_validation](results/hybrid_model/graficas_training_vs_validation.png)
 
 ---
 
