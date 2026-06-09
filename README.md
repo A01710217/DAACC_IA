@@ -1,16 +1,25 @@
 # DAACC_IA
 
-# Clasificación de Señales de Tráfico
+# Clasificación de Señales de Tráfico Mediante Redes Neuronales Convolucionales
 
 Proyecto de **clasificación multiclase** de señales de tránsito utilizando Redes Neuronales Convolucionales (CNN).
 
 ---
 
-## Descripción del Proyecto
+## Resumen
 
-Este proyecto tiene como objetivo desarrollar un modelo capaz de identificar correctamente **7 tipos de señales de tráfico** comunes. Se utilizó un enfoque de aprendizaje profundo con TensorFlow/Keras, partiendo de un modelo CNN creado desde cero y aplicando técnicas de preprocesamiento y data augmentation.
+Este proyecto presenta un enfoque basado en Redes Neuronales Convolucionales (CNN) para la clasificación de señales viales en siete categorías: 
+- Keep Left
+- Keep Right
+- No Entry
+- Pedestrian Crossing
+- Stop Sign
+- Turn Left
+- Turn Right
 
-**Precisión alcanzada en Test:** **95.32%**
+Así mismo se proporciona una interfaz web interactiva para la evaluación de imágenes en tiempo real con visualización de probabilidades, habilitada directamente dentro de notebooks de Google Colaboratory. Los resultados experimentales demuestran un rendimiento de clasificación efectivo sobre el conjunto de datos personalizado de señales viales.
+
+Palabras clave: Clasificación de señales viales · Redes neuronales convolucionales · Aprendizaje por transferencia · Clasificación de imágenes · Vehículos autónomos · Google Colab · Kaggle
 
 ---
 
