@@ -288,17 +288,34 @@ Test Accuracy (0.9486): Al enfrentarse al set de prueba con imágenes del mundo 
 
 Test F1-Score (0.9481): Un puntaje sobresaliente (94.81%). Certifica que el refinamiento (Fine-Tuning + Dropout) logró un equilibrio óptimo: el sistema es sumamente robusto contra falsos positivos (no inventa señales que no están ahí) y falsos negativos (no se le escapa casi ninguna señal de las 7 categorías).
 
+### Prueba con imagen
+
+![Prueba keep_left](results/prueba_keep_left.png)
+
+Los resultados mostrados nos indican cómo actúan los tres modelos frente a una imagen sacada de internet.
+
 ### ¿Por qué la replicación del paper tiene un 75.43% de exactitud?
 La literatura base de Hosseini et al. utiliza VGG16 congelada de forma exitosa debido a que entrenan sobre el dataset alemán GTSRB, el cual posee más de 50,000 imágenes. Al aplicar esa misma metodología restrictiva sobre un dataset balanceado pequeño (833 imágenes), el modelo sufre un resultado con ruido no logrando mapear las clases simples de manera correcta. 
 
 
 ## Matriz de confusión
 
+### CNN Base - Arquitectura desde 0
+
 ![Matriz de confusión de la CNN base](results/base_model/matriz_cnn_base.png)
+
+### Reproducción de la CNN del paper 
 
 ![Matriz de confusión de la CNN paper](results/paper_model/matriz_cnn_paper.png)
 
+### Modelo mejorado con Transfer Learning
+
 ![Matriz de confusión de la CNN VGG16 híbrida](results/hybrid_model/matriz_cnn_hibrida.png)
+
+Las confusiones masivas entre las flechas direccionales colapsaron a su punto mínimo: 
+- Clase 5 (Turn Left) con Clase 0 (Keep Left) existen errores de confusión, al igual que con las clases Clase 6 (Turn right) y  Clase 1 (Keep right).
+
+Clases complejas como 2 (No Entry), 4 (Stop Sign) y 0 (Keep Left) obtuvieron un 100% de efectividad (24/24 aciertos).
 
 ---
 
