@@ -54,7 +54,7 @@ DAACC_IA/
 └── README.md
 ```
 
---
+---
 
 # Tecnologías Utilizadas
 
@@ -108,21 +108,42 @@ El conjunto de datos utilizado en este proyecto consiste en imágenes pertenecie
   - Test: 20%
 Las imágenes fueron preprocesadas mediante el siguiente proceso:
 
-
 ---
 
 # Metodología
 
 1. **Combinación de datos**: Se unieron las carpetas `train` y `val` en una sola carpeta (`all_signals`).
 2. **Balanceo de clases**: Todas las clases fueron igualadas a 119 imágenes, con el fin de evitar el "sesgo del modelo", ya que el modelo puede aprende mucho mejor la clase que tiene más imagenes.
-3. **Data Augmentation**: Rotación, desplazamiento, deformación, zoom y flip horizontal.
-4. **Modelo**: CNN con dos fases extracción de cartacteristicas y clasificación densa.
-6. **Configuración**:
+3. **Data Augmentation**: Rotación, desplazamiento, deformación y zoom.
+
+## CNN Base - Arquitectura desde 0
+
+La arquitectura CNN propuesta sigue un diseño secuencial con tres bloques convolucionales, cada uno compuesto por una capa de convolución seguida de max pooling, seguidos de capas completamente conectadas para la clasificación.
+ 
+```
+Entrada (224 × 224 × 3)
+    │
+    ├─ Conv2D(32, 3×3, ReLU) → MaxPooling2D(2×2)
+    ├─ Conv2D(64, 3×3, ReLU) → MaxPooling2D(2×2)
+    ├─ Conv2D(128, 3×3, ReLU) → MaxPooling2D(2×2)
+    │
+    ├─ Flatten
+    ├─ Dense(512, ReLU)
+    └─ Dense(7, Softmax)
+ 
+Salida: Distribución de probabilidad sobre 7 clases
+```
+
+![alt text](results/base_model/descripcion.png)
+
+**Configuración**:
     - **Optimizador:** Adam.
     - **Función de Pérdida:** Entropía cruzada categórica (`categorical_crossentropy`), adecuada para la clasificación multiclase con etiquetas en codificación *one-hot*.
     - **Métrica Principal:** Precisión (*Accuracy*).
     - **Flujo de Entrenamiento:** El proceso se extendió por un máximo de 30 épocas utilizando generadores de datos en lotes (*data streams*). Con el fin de regularizar y estructurar los ciclos de cómputo, se fijaron 100 pasos por época (`steps_per_epoch=100`) para el subconjunto de entrenamiento y 50 pasos para el subconjunto de validación (`validation_steps=50`).
-7. **Enfoque Comparativo**: Aprendizaje por Transferencia (modelo del documenot `Road Sign Classification Using Transfer Learning and Pre-trained CNN Models`)
+3. **Enfoque Comparativo**: Aprendizaje por Transferencia (modelo del documenot `Road Sign Classification Using Transfer Learning and Pre-trained CNN Models`)
+
+
 
 ---
 
