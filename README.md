@@ -156,6 +156,18 @@ En el documento `Road Sign Classification Using Transfer Learning and Pre-traine
     - Épocas: 15
     - Detención temprana (Early Stopping): Paciencia de 3 épocas si la validación no mejora.
 
+```
+Entrada (224 × 224 × 3)
+    │
+    ├─ VGG16 Base (ImageNet, capas congeladas)
+    │
+    ├─ Flatten
+    ├─ Dense(512, ReLU)
+    └─ Dense(7, Softmax)
+
+Salida: Distribución de probabilidad sobre 7 clases
+```
+
 ### Descripción de la arquitectura
 
 ![Descripción de la arquitectura](results/paper_model/descripcion.png)
@@ -165,6 +177,9 @@ En el documento `Road Sign Classification Using Transfer Learning and Pre-traine
 
 ## Modelo mejorado con Transfer Learning
 
+### Descripción de la arquitectura
+
+![Descripción de la arquitectura](results/hybrid_model/descripcion.png)
 
 
 ---
