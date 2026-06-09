@@ -69,23 +69,45 @@ DAACC_IA/
 
 # Dataset
 
-- **Fuente:** [Road Signs Dataset](https://www.kaggle.com/datasets/ziadghanem01/road-signs)
-- **Número de clases:** 7
-  - Keep Left
-  - Keep Right
-  - No Entry
-  - Pedestrian Crossing
-  - Stop Sign
-  - Turn Left
-  - Turn Right
+El conjunto de datos utilizado en este proyecto consiste en imágenes pertenecientes a siete clases de señales viales:
 
-- **Imágenes totales combinadas:** 2,969
+| ID de Clase | Etiqueta | Descripción |
+|:---:|---|---|
+| 0 | Keep Left | Señal de mantener la izquierda |
+| 1 | Keep Right | Señal de mantener la derecha |
+| 2 | No Entry | Prohibición de entrada |
+| 3 | Pedestrian Crossing | Paso de peatones |
+| 4 | Stop Sign | Señal de alto |
+| 5 | Turn Left | Giro a la izquierda |
+| 6 | Turn Right | Giro a la derecha |
+
+**Imágenes totales:** 2,969
+
+**Fuente:** [Road Signs Dataset](https://www.kaggle.com/datasets/ziadghanem01/road-signs)
+
+---
+
+# Preprocesamiento
+
+- **Redimensionamiento:** Todas las imágenes redimensionadas a 224 × 224 píxeles para coincidir con la forma de entrada del modelo.
+
+- **Normalización:** Valores de píxeles escalados al rango [0, 1] dividiendo entre 255.
+
+- **Aumento de datos (Data Augmentation):** Aplicado únicamente al conjunto de entrenamiento para incrementar la variabilidad de los datos y reducir el sobreajuste:
+  - Desplazamiento horizontal aleatorio de hasta un 20% (`width_shift_range=0.2`).
+  - Desplazamiento vertical aleatorio de hasta un 20% (`height_shift_range=0.2`).
+  - Transformación de cizallamiento (*shear*) de hasta un 20% (`shear_range=0.2`).
+  - Zoom aleatorio de hasta un 20% (`zoom_range=0.2`).
+  - No se aplicó volteo horizontal (`horizontal_flip=False`), ya que podría alterar el significado de algunas señales de tránsito.
+
 - **Estrategia de balanceo:** Todas las clases reducidas a **119 imágenes** (para evitar sesgo del modelo)
 
 - **División final:**
   - Train: 70%
   - Validation: 10%
   - Test: 20%
+Las imágenes fueron preprocesadas mediante el siguiente proceso:
+
 
 ---
 
